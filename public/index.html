@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tourism Asset Reporter</title>
+    <title>NWP Tourism Asset Reporter</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="style.css">
 </head>
@@ -11,7 +11,7 @@
     <div id="main-container">
         <div id="map"></div>
         <div id="header">
-            <h1>Tourism Asset Feedback Collector</h1>
+            <h1>NWP Tourism Asset Collector</h1>
             <button id="show-all-reports-btn">View All Submissions</button>
         </div>
     </div>
@@ -19,90 +19,123 @@
     <!-- The form for submitting data (initially hidden) -->
     <div id="form-container" class="hidden">
         <h3>Report on a Tourism Asset</h3>
-        <p>Click on the map to set a location</p>
+        <!-- Updated instruction text -->
+        <p>Fill out the details for the selected location.</p>
+        
         <form id="asset-form">
             <!-- Section 1: Asset Information -->
             <h4>1. Asset Information</h4>
-            <label for="assetType">Asset Type:</label>
-            <select id="assetType" name="assetType" required>
-                <option value="">Select a type...</option>
-                <option value="Natural Attractions">Natural Attractions</option>
-                <option value="Cultural & Historical Attractions">Cultural & Historical Attractions</option>
-                <option value="Adventure & Recreation">Adventure & Recreation</option>
-                <option value="Hospitality & Services">Hospitality & Services</option>
-                <option value="Shopping & Local Products">Shopping & Local Products</option>
-                <option value="Urban & Modern Attractions">Urban & Modern Attractions</option>
-                <option value="Sustainability & Safety">Sustainability & Safety</option>
-            </select>
+            
+            <div class="form-group">
+                <label for="placeName">Name of Place (Auto-selected):</label>
+                <!-- This field is now read-only -->
+                <input type="text" id="placeName" name="placeName" required readonly>
+            </div>
+            
+            <div class="form-group">
+                <label for="location">Location (Auto-selected):</label>
+                <!-- This field is now read-only -->
+                <input type="text" id="location" name="location" required readonly>
+            </div>
 
-            <label for="placeName">Name of Place:</label>
-            <input type="text" id="placeName" name="placeName" required>
-
-            <label for="country">Country:</label>
-            <input type="text" id="country" name="country" required>
-
-            <label for="location">Location (auto-filled by map click):</label>
-            <input type="text" id="location" name="location" readonly required>
+            <div class="form-group">
+                <label for="assetType">Asset Type:</label>
+                <select id="assetType" name="assetType" required>
+                    <option value="">Select a type...</option>
+                    <option value="Natural Attractions">Natural Attractions</option>
+                    <option value="Cultural & Historical Attractions">Cultural & Historical Attractions</option>
+                    <option value="Adventure & Recreation">Adventure & Recreation</option>
+                    <option value="Hospitality & Services">Hospitality & Services</option>
+                    <option value="Shopping & Local Products">Shopping & Local Products</option>
+                    <option value="Urban & Modern Attractions">Urban & Modern Attractions</option>
+                    <option value="Sustainability & Safety">Sustainability & Safety</option>
+                </select>
+            </div>
+            
+            <!-- The 'country' field has been COMPLETELY REMOVED from the form. -->
+            
+            <!-- The rest of the form remains the same... -->
+            <h4>2. Visit Details</h4>
+            <!-- ... (No changes needed in sections 2 and 3 of the form) ... -->
 
             <!-- Section 2: Visit Details -->
             <h4>2. Visit Details</h4>
-            <label>Have you visited this place?</label>
-            <select id="hasVisited" name="hasVisited" required>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-            </select>
+            <div class="form-group">
+                <label>Have you visited this place?</label>
+                <select id="hasVisited" name="hasVisited" required>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
 
             <div id="visit-details-section">
-                <label for="visitFrequency">Visit Frequency:</label>
-                <select id="visitFrequency" name="visitFrequency">
-                    <option value="First Time">First Time</option>
-                    <option value="Occasionally">Occasionally</option>
-                    <option value="Often">Often</option>
-                </select>
-
-                <label for="lastVisitDate">Last Visit Date:</label>
-                <input type="date" id="lastVisitDate" name="lastVisitDate">
-
-                <label for="seasonOfVisit">Season of Visit:</label>
-                <select id="seasonOfVisit" name="seasonOfVisit">
-                    <option value="Summer">Summer</option>
-                    <option value="Winter">Winter</option>
-                    <option value="Monsoon">Monsoon</option>
-                    <option value="Other">Other</option>
-                </select>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="visitFrequency">Visit Frequency:</label>
+                        <select id="visitFrequency" name="visitFrequency">
+                            <option value="First Time">First Time</option>
+                            <option value="Occasionally">Occasionally</option>
+                            <option value="Often">Often</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="seasonOfVisit">Season of Visit:</label>
+                        <select id="seasonOfVisit" name="seasonOfVisit">
+                            <option value="Summer">Summer</option>
+                            <option value="Winter">Winter</option>
+                            <option value="Monsoon">Monsoon</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <label for="lastVisitDate">Last Visit Date:</label>
+                    <input type="date" id="lastVisitDate" name="lastVisitDate">
+                </div>
             </div>
 
             <!-- Section 3: Feedback & Ratings -->
             <div id="feedback-section">
                 <h4>3. Feedback & Ratings</h4>
-                <label for="overallSatisfaction">Overall Satisfaction (1-5 Stars):</label>
-                <input type="number" id="overallSatisfaction" name="overallSatisfaction" min="1" max="5">
-
-                <label>Would you recommend this place?</label>
-                 <select id="wouldRecommend" name="wouldRecommend">
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                </select>
-
-                <label for="bestThing">Best Thing About This Place:</label>
-                <select id="bestThing" name="bestThing">
-                    <option value="Scenery">Scenery</option>
-                    <option value="Service">Service</option>
-                    <option value="Facilities">Facilities</option>
-                    <option value="Culture">Culture</option>
-                    <option value="Food">Food</option>
-                    <option value="Other">Other</option>
-                </select>
-
-                <label for="improvements">What Could Be Improved?</label>
-                <textarea id="improvements" name="improvements" rows="3"></textarea>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="overallSatisfaction">Overall Satisfaction (1-5):</label>
+                        <input type="number" id="overallSatisfaction" name="overallSatisfaction" min="1" max="5">
+                    </div>
+                    <div class="form-group">
+                        <label>Recommend this place?</label>
+                        <select id="wouldRecommend" name="wouldRecommend">
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="bestThing">Best Thing About This Place:</label>
+                    <select id="bestThing" name="bestThing">
+                        <option value="Scenery">Scenery</option>
+                        <option value="Service">Service</option>
+                        <option value="Facilities">Facilities</option>
+                        <option value="Culture">Culture</option>
+                        <option value="Food">Food</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="improvements">What Could Be Improved?</label>
+                    <textarea id="improvements" name="improvements" rows="3" placeholder="Your feedback is valuable..."></textarea>
+                </div>
             </div>
 
-            <button type="submit">Submit Report</button>
-            <button type="button" id="cancel-btn">Cancel</button>
+            <div class="form-buttons">
+                <button type="submit">Submit Report</button>
+                <button type="button" id="cancel-btn">Cancel</button>
+            </div>
         </form>
     </div>
 
+    <!-- We need to include a library for the new map functionality -->
+    <script src="https://unpkg.com/point-in-polygon/dist/point-in-polygon.min.js"></script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="app.js"></script>
 </body>

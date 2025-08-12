@@ -8,19 +8,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const renderTable = (reports) => {
         reportTableBody.innerHTML = '';
         if (reports.length === 0) {
-            reportTableBody.innerHTML = '<tr><td colspan="7">No reports found.</td></tr>';
+            // Updated colspan from 7 to 6
+            reportTableBody.innerHTML = '<tr><td colspan="6">No reports found.</td></tr>';
             return;
         }
 
         reports.forEach(report => {
             const row = document.createElement('tr');
-            // We'll use placeName for the analysis page link
             row.dataset.placeName = report.placeName;
 
             row.innerHTML = `
                 <td>${report.placeName}</td>
                 <td>${report.assetType}</td>
-                <td>${report.country}</td>
+                <!-- REMOVED Country TD -->
                 <td>${report.hasVisited}</td>
                 <td>${report.overallSatisfaction ? `${report.overallSatisfaction} / 5` : 'N/A'}</td>
                 <td>${new Date(report.createdAt).toLocaleDateString()}</td>
@@ -32,7 +32,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const fetchReports = async () => {
         try {
-            // Updated API endpoint
             const response = await fetch('/api/assets');
             if (!response.ok) throw new Error('Failed to fetch data');
             
@@ -43,16 +42,16 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error('Error fetching reports:', error);
             reportTitle.textContent = 'Failed to load reports';
-            reportTableBody.innerHTML = `<tr><td colspan="7">${error.message}</td></tr>`;
+            reportTableBody.innerHTML = `<tr><td colspan="6">${error.message}</td></tr>`;
         }
     };
 
     // --- EVENT LISTENERS ---
     searchInput.addEventListener('input', (e) => {
         const searchTerm = e.target.value.toLowerCase();
+        // Updated filter to remove country
         const filteredReports = allReports.filter(report => 
-            report.placeName.toLowerCase().includes(searchTerm) ||
-            report.country.toLowerCase().includes(searchTerm)
+            report.placeName.toLowerCase().includes(searchTerm)
         );
         renderTable(filteredReports);
     });
@@ -62,7 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const row = e.target.closest('tr');
             const placeName = row.dataset.placeName;
             if (placeName) {
-                // Navigate to analysis page for that specific place
                 window.location.href = `analysis.html?placeName=${encodeURIComponent(placeName)}`;
             }
         }

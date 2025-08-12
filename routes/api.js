@@ -1,27 +1,23 @@
 const express = require('express');
 const router = express.Router();
-// IMPORTANT: Change this to require the new Asset model
 const Asset = require('../models/Asset');
 
-// GET route: To fetch all asset reports (with filtering)
+// GET route remains the same
 router.get('/assets', async (req, res) => {
     try {
         let filter = {};
-        // Allow filtering by placeName for the analysis page
         if (req.query.placeName) {
             filter.placeName = req.query.placeName;
         }
-
         const items = await Asset.find(filter).sort({ createdAt: -1 });
         res.json(items);
-
     } catch (err) {
         console.error("Error fetching assets:", err);
         res.status(500).json({ msg: 'Server error while fetching reports' });
     }
 });
 
-// POST route: To submit a new asset report
+// POST route: Updated to remove 'country'
 router.post('/assets', async (req, res) => {
     try {
         const newAsset = new Asset({
@@ -29,7 +25,7 @@ router.post('/assets', async (req, res) => {
             assetType: req.body.assetType,
             placeName: req.body.placeName,
             location: req.body.location,
-            country: req.body.country,
+            // 'country' has been REMOVED from the data being saved.
 
             // Section 2
             hasVisited: req.body.hasVisited,

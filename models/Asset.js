@@ -12,13 +12,10 @@ const AssetSchema = new Schema({
         required: true
     },
     location: {
-        type: String,
+        type: String, // This will store the coordinates
         required: true
     },
-    country: {
-        type: String,
-        required: true
-    },
+    // The 'country' field has been REMOVED.
 
     // 2. Visit Details
     hasVisited: {
@@ -27,25 +24,25 @@ const AssetSchema = new Schema({
     },
     visitFrequency: {
         type: String,
-        required: false // Only required if hasVisited is "Yes"
+        required: false
     },
     lastVisitDate: {
         type: Date,
-        required: false // Only required if hasVisited is "Yes"
+        required: false
     },
     seasonOfVisit: {
         type: String,
-        required: false // Only required if hasVisited is "Yes"
+        required: false
     },
 
     // 3. Feedback & Ratings
     overallSatisfaction: {
-        type: Number, // Storing stars as a number 1-5
-        required: false // Only required if hasVisited is "Yes"
+        type: Number,
+        required: false
     },
     wouldRecommend: {
-        type: String, // "Yes" or "No"
-        required: false // Only required if hasVisited is "Yes"
+        type: String,
+        required: false
     },
     bestThing: {
         type: String,
@@ -56,10 +53,7 @@ const AssetSchema = new Schema({
         required: false
     }
 
-    // Note: We are not including photo upload in this version to keep it simple
-    // and avoid the complexity of file storage on free hosting services.
-
-}, { timestamps: true }); // timestamps adds createdAt and updatedAt
+}, { timestamps: true });
 
 const Asset = mongoose.model('Asset', AssetSchema);
 
