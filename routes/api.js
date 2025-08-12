@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Asset = require('../models/Asset');
 
-// GET route remains the same
+// GET route: To fetch all asset reports
+// This route works correctly.
 router.get('/assets', async (req, res) => {
     try {
         let filter = {};
@@ -17,33 +18,33 @@ router.get('/assets', async (req, res) => {
     }
 });
 
-// POST route: Updated to remove 'country'
+// POST route: To submit a new asset report
+// This is the route we are fixing to ensure it is correctly registered.
 router.post('/assets', async (req, res) => {
     try {
+        // Create a new asset object from the request body
         const newAsset = new Asset({
-            // Section 1
             assetType: req.body.assetType,
             placeName: req.body.placeName,
             location: req.body.location,
-            // 'country' has been REMOVED from the data being saved.
-
-            // Section 2
             hasVisited: req.body.hasVisited,
             visitFrequency: req.body.visitFrequency,
             lastVisitDate: req.body.lastVisitDate,
             seasonOfVisit: req.body.seasonOfVisit,
-
-            // Section 3
             overallSatisfaction: req.body.overallSatisfaction,
             wouldRecommend: req.body.wouldRecommend,
             bestThing: req.body.bestThing,
             improvements: req.body.improvements
         });
 
+        // Save the new asset to the database
         const item = await newAsset.save();
+        
+        // Respond with a 201 (Created) status and the new item as JSON
         res.status(201).json(item);
 
     } catch (err) {
+        // If there's an error (e.g., validation fails), log it and send a 400 error
         console.error("Error saving asset:", err);
         res.status(400).json({ msg: 'Error saving to database', error: err.message });
     }

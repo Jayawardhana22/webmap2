@@ -120,9 +120,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
 
+        // Clear non-applicable fields if user hasn't visited
         if (data.hasVisited === 'No') {
             delete data.visitFrequency;
-            delete data.lastVisitDate;
+            // Ensure empty date is not sent as an empty string, which can cause issues
+            if (!data.lastVisitDate) delete data.lastVisitDate;
             delete data.seasonOfVisit;
             delete data.overallSatisfaction;
             delete data.wouldRecommend;
@@ -137,14 +139,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify(data),
             });
 
+            // If the server response is not "ok" (e.g., 400, 405, 500 error)
             if (!response.ok) {
-                const errorResult = await response.json();
-                throw new Error(errorResult.msg || 'Failed to submit report');
+                // Try to get a detailed error message from the server's JSON response
+                const errorData = await response.json().catch(() => {
+                    // If the response isn't JSON, use the status text
+                    throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
+                });
+                // Throw an error with the specific message from the server
+                throw new Error(errorData.msg || 'Failed to submit report. Please try again.');
             }
 
+            // If the submission was successful
             alert('Asset report submitted successfully!');
             formContainer.classList.add('hidden');
+
         } catch (error) {
+            // Catch any error from the try block and display it in the alert
             console.error('Submission Error:', error);
             alert(`Submission Error: ${error.message}`);
         }
