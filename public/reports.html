@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submitted Asset Reports</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="report-page-body">
+    <div id="report-display-container">
+        <div class="page-header">
+            <h2 id="report-title">Loading Reports...</h2>
+            <button onclick="window.location.href='index.html'" class="back-button">← Back to Map</button>
+        </div>
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Search by place name or country...">
+        </div>
+        <div id="report-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Place Name</th>
+                        <th>Asset Type</th>
+                        <th>Country</th>
+                        <th>Visited?</th>
+                        <th>Satisfaction</th>
+                        <th>Date Submitted</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="report-table-body">
+                    <!-- Data will be inserted here by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="reports.js"></script>
+</body>
+</html>

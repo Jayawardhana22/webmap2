@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asset Analysis Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="report-page-body">
+
+    <div class="dashboard-container">
+        <div class="page-header">
+            <h2 id="analysis-title">Loading Analysis...</h2>
+            <button onclick="window.history.back()" class="back-button">← Go Back</button>
+        </div>
+
+        <!-- Summary Statistics Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Submissions</h3>
+                <p id="total-reports">-</p>
+            </div>
+            <div class="stat-card">
+                <h3>Avg. Satisfaction</h3>
+                <p id="avg-satisfaction">-</p>
+            </div>
+            <div class="stat-card">
+                <h3>Recommendation Rate</h3>
+                <p id="recommend-rate">-</p>
+            </div>
+             <div class="stat-card">
+                <h3>Most Common Season</h3>
+                <p id="common-season">-</p>
+            </div>
+        </div>
+
+        <!-- Breakdown Charts -->
+        <div class="chart-grid">
+            <div class="chart-card">
+                 <h3>Visitor Frequency</h3>
+                 <div class="chart-container-pie">
+                    <canvas id="frequency-chart"></canvas>
+                </div>
+            </div>
+            <div class="chart-card">
+                 <h3>"Best Thing" Breakdown</h3>
+                 <div class="chart-container-pie">
+                    <canvas id="best-thing-chart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="analysis.js"></script>
+</body>
+</html>
+
+<!-- Add a new grid style for charts -->
+<style>
+.chart-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 20px;
+}
+</style>
