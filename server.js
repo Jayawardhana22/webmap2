@@ -9,11 +9,25 @@ const app = express();
 app.use(cors());
 // Enable the express server to parse incoming JSON payloads
 app.use(express.json());
-// Serve all static files (like index.html, app.js, style.css) from the 'public' folder
+
+// ***************************************************************
+// *** THIS IS THE CRITICAL CHANGE ***
+// We define the API routes BEFORE the static file server.
+// ***************************************************************
+
+// --- API Routes ---
+// This line now comes FIRST.
+// It tells Express that any request starting with '/api' should be handled by the 'routes/api.js' file.
+app.use('/api', require('./routes/api'));
+
+
+// --- Static File Server ---
+// This line now comes LAST.
+// It will serve all static files (like index.html) for any request that IS NOT an API route.
 app.use(express.static('public'));
 
+
 // --- Database Configuration ---
-// Get the MongoDB connection string from environment variables
 const db = process.env.MONGO_URI;
 
 // --- Connect to MongoDB ---
@@ -22,10 +36,6 @@ mongoose
     .then(() => console.log('MongoDB Connected Successfully...'))
     .catch(err => console.log('MongoDB Connection Error:', err));
 
-// --- API Routes ---
-// This is the most critical line.
-// It tells Express that any request starting with '/api' should be handled by the 'routes/api.js' file.
-app.use('/api', require('./routes/api'));
 
 // --- Server Definition ---
 const port = process.env.PORT || 5500; // Use port 5500 for local development
