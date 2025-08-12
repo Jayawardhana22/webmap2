@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Asset = require('../models/Asset');
 
-// GET route: To fetch all asset reports
-// This route works correctly.
+// === GET /api/assets ===
+// Fetches all asset reports. Supports filtering by placeName.
 router.get('/assets', async (req, res) => {
     try {
         let filter = {};
@@ -18,11 +18,10 @@ router.get('/assets', async (req, res) => {
     }
 });
 
-// POST route: To submit a new asset report
-// This is the route we are fixing to ensure it is correctly registered.
+// === POST /api/assets ===
+// Submits a new asset report. This is the handler for your form.
 router.post('/assets', async (req, res) => {
     try {
-        // Create a new asset object from the request body
         const newAsset = new Asset({
             assetType: req.body.assetType,
             placeName: req.body.placeName,
@@ -37,14 +36,10 @@ router.post('/assets', async (req, res) => {
             improvements: req.body.improvements
         });
 
-        // Save the new asset to the database
         const item = await newAsset.save();
-        
-        // Respond with a 201 (Created) status and the new item as JSON
-        res.status(201).json(item);
+        res.status(201).json(item); // Respond with "201 Created" on success
 
     } catch (err) {
-        // If there's an error (e.g., validation fails), log it and send a 400 error
         console.error("Error saving asset:", err);
         res.status(400).json({ msg: 'Error saving to database', error: err.message });
     }
